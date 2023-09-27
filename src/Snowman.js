@@ -9,6 +9,8 @@ import img4 from "./4.png";
 import img5 from "./5.png";
 import img6 from "./6.png";
 
+import { randomWord, ENGLISH_WORDS } from "./words";
+
 /** Snowman game: plays hangman-style game with a melting snowman.
  *
  * Props:
@@ -24,7 +26,7 @@ import img6 from "./6.png";
 
 function Snowman({
   images = [img0, img1, img2, img3, img4, img5, img6],
-  words = ["apple"],
+  words = [randomWord(ENGLISH_WORDS)],
   maxWrong = 6,
 }) {
   /** by default, allow 6 guesses and use provided gallows images. */
@@ -70,6 +72,12 @@ function Snowman({
     ));
   }
 
+  function restartGame() {
+    setNWrong((n) => 0);
+    setGuessedLetters(() => new Set());
+    setAnswer((a) => randomWord(ENGLISH_WORDS));
+  }
+
   const lostGame = nWrong <= maxWrong;
 
   return (
@@ -81,6 +89,7 @@ function Snowman({
       <p>Number wrong: {nWrong}</p>
       <p className="Snowman-word">{lostGame ? guessedWord() : answer}</p>
       {lostGame ? <p>{generateButtons()}</p> : <p>You lose!!!</p>}
+      <button onClick={restartGame}>restart game</button>
     </div>
   );
 }
